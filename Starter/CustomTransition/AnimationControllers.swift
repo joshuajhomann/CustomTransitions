@@ -36,6 +36,38 @@ enum AnimationController {
         }
     }
 
-//    class Drop: NSObject, UIViewControllerAnimatedTransitioning {
-//    }
+    class Drop: NSObject, UIViewControllerAnimatedTransitioning {
+        private let isReversed: Bool
+        init(isReversed: Bool = false) {
+            self.isReversed = isReversed
+        }
+        func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+            return AnimationController.defaultTime
+        }
+        func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+            guard let destinationView = transitionContext.destinationView,
+                let sourceView = transitionContext.sourceView else {
+                    transitionContext.completeTransition(false)
+                    return
+            }
+            let dy = transitionContext.containerView.bounds.height
+            transitionContext.containerView.addSubviewIfNeeded(destinationView)
+            if !isReversed {
+                destinationView.transform = .init(translationX: 0, y: -dy)
+                UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: {
+                    destinationView.transform = .identity
+                }, completion: { _ in
+                    transitionContext.completeTransition(true)
+                })
+            } else {
+                transitionContext.containerView.sendSubviewToBack(destinationView)
+                UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+                    sourceView.transform = CGAffineTransform(rotationAngle: .pi).translatedBy(x: 0, y: -dy)
+                }, completion: { _ in
+                    transitionContext.completeTransition(true)
+                })
+            }
+        }
+
+    }
 }

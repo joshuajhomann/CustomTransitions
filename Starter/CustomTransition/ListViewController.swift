@@ -14,7 +14,9 @@ class ListViewController: UIViewController {
     @IBOutlet private var layout: UICollectionViewFlowLayout!
     var selectedRect: CGRect?
     override func viewDidLoad() {
+        super.viewDidLoad()
         navigationController?.navigationBar.barStyle = .black
+        navigationController?.delegate = self
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -31,6 +33,20 @@ class ListViewController: UIViewController {
         }
     }
 }
+
+extension ListViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch operation {
+        case .push:
+            return AnimationController.Zoom()
+        case .pop:
+            return AnimationController.Zoom(isReversed: true)
+        case .none:
+            return nil
+        }
+    }
+}
+
 
 class ListCollectionViewCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
