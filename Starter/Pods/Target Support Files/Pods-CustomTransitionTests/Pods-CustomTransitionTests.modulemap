@@ -1,0 +1,6 @@
+framework module Pods_CustomTransitionTests {
+  umbrella header "Pods-CustomTransitionTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
