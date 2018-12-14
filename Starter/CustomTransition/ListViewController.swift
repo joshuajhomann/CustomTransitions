@@ -38,9 +38,9 @@ extension ListViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .push:
-            return AnimationController.Zoom()
+            return AnimationController.Drop()
         case .pop:
-            return AnimationController.Zoom(isReversed: true)
+            return AnimationController.Drop(isReversed: true)
         case .none:
             return nil
         }
